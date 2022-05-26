@@ -62,5 +62,57 @@ namespace BL
             }
             return result;
         }
+        public static ML.Result Add(ML.Materia materia)
+        {
+            //instancia
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
+                {
+                    string query = "INSERT INTO [Materia]  ([Nombre] ,[Costo] ,[Creditos]) VALUES (@Nombre, @Costo, @Creditos )";
+
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandText = query;
+                        cmd.Connection = context;
+
+                        SqlParameter[] parameter = new SqlParameter[3];
+
+                        parameter[0] = new SqlParameter("@Nombre", SqlDbType.VarChar);
+                        parameter[0].Value = materia.Nombre;
+
+                        parameter[1] = new SqlParameter("@Costo", SqlDbType.Decimal);
+                        parameter[1].Value = materia.Costo;
+
+                        parameter[2] = new SqlParameter("@Creditos", SqlDbType.TinyInt);
+                        parameter[2].Value = materia.Creditos;
+
+                        cmd.Parameters.AddRange(parameter);
+                        cmd.Connection.Open();
+
+                        int RowsAffected = cmd.ExecuteNonQuery();
+
+                        if (RowsAffected > 0)
+                        {
+                            result.Correct = true;
+                        }
+                        else
+                        {
+                            result.Correct = false;
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.ErrorMessage = ex.Message;
+                result.Ex = ex;
+            }
+            return result;
+        }
     }
 }

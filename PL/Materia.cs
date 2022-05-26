@@ -34,5 +34,32 @@ namespace PL
                 Console.WriteLine("La materia no se pudo agregar " + result.ErrorMessage);
             }
         }
+        public static void AddConObjeto()
+        {
+            ML.Materia materia = new ML.Materia();
+
+            Console.WriteLine("Ingrese el nombre de la materia");
+            materia.Nombre = Console.ReadLine();
+
+            Console.WriteLine("Ingrese el costo de la materia");
+            materia.Costo = decimal.Parse(Console.ReadLine());
+
+            Console.WriteLine("Ingrese los creditos de la materia");
+            materia.Creditos = byte.Parse(Console.ReadLine());
+
+            //instancia
+            // ML.Result result = new ML.Result();
+
+            ML.Result result = BL.Materia.Add(materia);
+
+            if (result.Correct)
+            {
+                Console.WriteLine("La materia se ha agregado");
+            }
+            else
+            {
+                Console.WriteLine("La materia no se pudo agregar " + result.ErrorMessage);
+            }
+        }
     }
 }
